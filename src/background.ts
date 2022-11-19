@@ -1,21 +1,22 @@
-chrome.tabs.onUpdated.addListener(() => {
-  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    const message = {
-      type: "back",
-      color: "#F00",
-    };
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === "complete") {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      if (tab.id) {
+        let message = {
+          type: "back",
+        };
 
-    if (tabs.length && tabs[0].id && tabs[0].status === "complete") {
-      chrome.tabs
-        .sendMessage(tabs[0].id, message)
-        .then((response) => {
-          console.log("send message from background.js succeeded.");
-        })
-        .catch((error) => {
-          console.log(`send message from background.js failed: ${error}`);
-        });
-    } else {
-      console.log("tab status is not completed.");
-    }
-  });
+        chrome.tabs
+          .sendMessage(tab.id, message)
+          .then((response) => {
+            console.log("send message from background.js succeeded.");
+          })
+          .catch((error) => {
+            console.log(`send message from background.js failed: ${error}`);
+          });
+      } else {
+        console.log("tab status is not completed.");
+      }
+    });
+  }
 });
