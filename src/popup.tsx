@@ -22,6 +22,7 @@ const Popup = () => {
         chrome.tabs.sendMessage(
           tab.id,
           {
+            type: "color",
             color: "#555555",
           },
           (msg) => {
