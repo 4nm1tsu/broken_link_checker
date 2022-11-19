@@ -12,7 +12,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             console.log("send message from background.js succeeded.");
           })
           .catch((error) => {
-            console.log(`send message from background.js failed: ${error}`);
+            console.error(`send message from background.js failed: ${error}`);
           });
       } else {
         console.log("tab status is not completed.");
